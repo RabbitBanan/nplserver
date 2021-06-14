@@ -21,18 +21,14 @@ def send_messages():
         #    return abort(400)
         name = request.form['name']
         text = request.form['text']
-        if not isinstance(name, str) or not isinstance(text, str):
-            abort(400)
-        if name == '' or text == '':
-            abort(400)
     # Метод Get для тестирования
     else:
         text = request.args.get('text')
         name = request.args.get('name')
-        if not isinstance(name, str) or not isinstance(text, str):
-           abort(400)
-        if name == '' or text == '':
-           abort(400)
+    if not isinstance(name, str) or not isinstance(text, str):
+        abort(400)
+    if name == '' or text == '':
+        abort(400)
     # Начинается распознование
     answer = bot(name, text)
     # записываем входной запрос и результат распознование в БД
@@ -74,10 +70,11 @@ def get_failure_phrase(data_set):
     return random.choice(failure_phrases)
 
 
-def bot(nlp, replica):
-    data_set=write_json(select_path_tematika(int(nlp)))
+def bot(tematika, replica):
+    data_set=write_json(select_path_tematika(int(tematika)))
+    nlp = select_nlp_tematika(int(tematika))
     # NLU
-    if (int(nlp) == 1):
+    if (nlp == 'Без МО'):
         # Без МО
         intent = classify_intent(data_set,replica)
     else:

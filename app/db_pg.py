@@ -17,7 +17,7 @@ class Tematika(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True)
     description = db.Column(db.String(500), nullable=True)
-    type_discernment = db.Column(db.String(50), nullable=True)
+    type_discernment = db.Column(db.String(50), nullable=False)
     path = db.Column(db.String(500), unique=True)
     # Foreign Key
     creater = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -73,9 +73,9 @@ def delete_user():
     pass
 
 # создание новой тематики
-def create_tematika(name: str, description: str, path: str, creater: int, type_discernment = 'Без МО'):
+def create_tematika(name: str, path: str, creater: int, type_discernment = 'Без МО', description = ''):
     try:
-
+        # создаем новую тематику
         new_tematika = Tematika (
             name=name,
             description=description,
@@ -108,6 +108,9 @@ def edit_tematika(id_tematika: int, name: str, description: str,  type_discernme
 
 def select_path_tematika(id_tematika:int) -> str:
     return Tematika.query.get(id_tematika).path
+
+def select_nlp_tematika(id_tematika:int) -> str:
+    return Tematika.query.get(id_tematika).type_discernment
 
 def delete_tematika():
     pass
